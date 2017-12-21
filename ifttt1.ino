@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <WiFiClientSecure.h>
-
+#include <math.h>
 //https://maker.ifttt.com/trigger/action_1/with/key/coTMYJkEfMIRnRXE2A56_y
 // Wi-FiアクセスポイントのSSIDとパスワード
 const char* ssid = "Test001";
@@ -13,10 +13,12 @@ const char* key = "osF2ut62VKiY3zUuSEOyW";
 const char* host = "maker.ifttt.com";
 const char* event   = "action_1";
 const int httpsPort = 443;
-
+const int ledPin = 12;               //Connect the LED Grove module to Pin12, Digital 12
+const int thresholdvalue = 18;       //The threshold for which the LED should turn on.
+float Rsensor; //Resistance of sensor in K
 WiFiClientSecure client;
-int i;
 void setup() {
+  pinMode(ledPin, OUTPUT);           //Set the LED on Digital 12 as an OUTPUT
   Serial.begin(115200);
   Serial.println();
   Serial.print("connecting to ");
@@ -36,7 +38,23 @@ void setup() {
 }
 
 void loop() {
-  i++;
+  int sensorValue = analogRead(0);
+  Rsensor = (float)(1023 - sensorValue) * 10 / sensorValue;
+  if (Rsensor > thresholdvalue)
+  {
+    digitalWrite(ledPin, HIGH);
+    String strRsensor = String(Rsensor);
+    sendMessage("Rsensor" + strRsensor);
+    Rsensor=0;
+  }
+  else
+  {
+    digitalWrite(ledPin, LOW);
+  }
+  delay(40);
+}
+
+void sendMessage(String message) {
   Serial.print("connecting to ");
   Serial.println(host);
 
@@ -54,7 +72,7 @@ void loop() {
 
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& dat = jsonBuffer.createObject();
-  dat["value1"] =  "test"+i;
+  dat["value1"] = message;
   String value;
   dat.printTo(value);
   value += "\r\n";
@@ -76,6 +94,5 @@ void loop() {
     client.stop();  // DISCONNECT FROM THE SERVER
     Serial.println("closing connection");
   }
-  delay(60000);
 }
 
