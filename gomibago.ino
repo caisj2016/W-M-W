@@ -145,7 +145,7 @@ void loop() {
     //動作aを止める
 	//TODO
   }
-  //モード1
+  //モード1　onpushの動作確認
   milkcocoa.loop();
   delay(200);
 };
@@ -153,6 +153,7 @@ void loop() {
 void onpush(DataElement *elem) {
   for (int i = 0; i < 6; i ++)
   {
+  //TODO 今LEDを開けだけ
     if (ledState == LOW)
       ledState = HIGH;
     else
