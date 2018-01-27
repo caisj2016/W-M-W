@@ -10,6 +10,10 @@ const int A_IN2 = 4;
 const int B_IN1 = 5;
 const int B_IN2 = 6;
 
+//障害物センサー ※番号まだ決めてない
+int buttonpin = 7;
+
+const boolean talkFlg=false;
 // int VR_PIN = A0;
 // int value = 500; //0~255の数値を入れてください。速度回転方向が変化します。
 // int turn_value = 50; //0~255の数値を入れてください。速度回転方向が変化します。(曲がる時)
@@ -64,11 +68,9 @@ void loop() {
             !talkFlg;
         }
     }
-    if(getCmd()==9){
-        !talkFlg;
-    }
+
     //モード2 障害物センサー
-    if(val==HIGH) {
+    if(digitalRead(buttonpin)==HIGH) {
         player.playSong(1);
         delay(5000);
         player.stop();
@@ -112,6 +114,13 @@ boolean isPeopleDetected()
     } else {
         return false;
     }
+}
+// 順方向に回転(前進)
+void foward(){
+      digitalWrite(A_IN1, HIGH);
+      digitalWrite(A_IN2, LOW);
+      digitalWrite(B_IN1, HIGH);
+      digitalWrite(B_IN2, LOW);
 }
 
 // 逆方向に順回転（バック）
