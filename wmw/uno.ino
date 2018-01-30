@@ -24,7 +24,11 @@ boolean talkFlg = false;
 #define SOFTSERIAL_RX_PIN  2
 #define SOFTSERIAL_TX_PIN  3
 SoftwareSerial softSerial(SOFTSERIAL_RX_PIN, SOFTSERIAL_TX_PIN);
+//発話値
 char cmd;
+//random
+long randNumber;
+
 const char *voiceBuffer[] =
 {
   "Turn on the light",
@@ -95,6 +99,7 @@ void setup() {
   pinMode(B_IN2, OUTPUT);
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
+  randomSeed(analogRead(0));
 }
 
 
@@ -103,17 +108,23 @@ void loop() {
   //モード2 障害物センサー
   if (digitalRead(buttonpin) == HIGH) {
     Serial.println("33333333333");
-    //音楽用意必要
-    player.playSong(5);
-    strip.setBrightness(200);
-    colorWipe(strip.Color(255, 0, 0), 50); // Red
-    colorWipe(strip.Color(0, 255, 0), 50); // Green
-    colorWipe(strip.Color(0, 0, 255), 50); // Blue
-    colorWipe(strip.Color(0, 0, 0, 255), 50); // White
-    whiteOverRainbow(20, 75, 5);
-    pulseWhite(5);
-    //回す　動作動作必要
-    mota(1);
+    //派手　20%可能
+    if(0==random(5){
+      //音楽用意必要
+      player.playSong(5);
+      strip.setBrightness(200);
+      colorWipe(strip.Color(255, 0, 0), 50); // Red
+      colorWipe(strip.Color(0, 255, 0), 50); // Green
+      colorWipe(strip.Color(0, 0, 255), 50); // Blue
+      colorWipe(strip.Color(0, 0, 0, 255), 50); // White
+      whiteOverRainbow(20, 75, 5);
+      pulseWhite(5);
+      //回す　動作動作必要
+      mota(1);
+    }else{
+      //地味
+      colorWipe(strip.Color(255, 0, 0), 500); // Red
+    }
     delay(5000);
   }
 
