@@ -109,7 +109,7 @@ void loop() {
   if (digitalRead(buttonpin) == HIGH) {
     Serial.println("33333333333");
     //派手　20%可能
-    if(0==random(5){
+    if(0==random(5)){
       //音楽用意必要
       player.playSong(5);
       strip.setBrightness(200);

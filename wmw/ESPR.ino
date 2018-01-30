@@ -33,11 +33,11 @@ SoftwareSerial mp3Serial(14, 15); // RX, TX
 MP3 player(mp3Serial);
 //LED
 //const int ledPin =  12;
-int ledState = LOW;
+//int ledState = LOW;
 #define PIN 12 // NeoPixelピン
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(4, PIN, NEO_GBR + NEO_KHZ800);
 
-int gamma[] = {
+int gammma[] = {
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
   1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
@@ -72,7 +72,7 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   Serial.println( milkcocoa.on(MILKCOCOA_DATASTORE, "push", onpush) );
-  digitalWrite(ledPin, ledState);
+  //digitalWrite(ledPin, ledState);
 };
 
 void loop() {
@@ -82,7 +82,8 @@ void loop() {
 
 void onpush(DataElement *elem) {
   player.next();
-  colorWipe(strip.Color(0, 0, 255), 5000); // Blue
+  strip.setBrightness(30);
+  rainbowFade2White(3, 3, 1);
   delay(200);
 };
 
@@ -98,7 +99,7 @@ void colorWipe(uint32_t c, uint8_t wait) {
 void pulseWhite(uint8_t wait) {
   for (int j = 0; j < 256 ; j++) {
     for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, strip.Color(0, 0, 0, gamma[j] ) );
+      strip.setPixelColor(i, strip.Color(0, 0, 0, gammma[j] ) );
     }
     delay(wait);
     strip.show();
@@ -106,7 +107,7 @@ void pulseWhite(uint8_t wait) {
 
   for (int j = 255; j >= 0 ; j--) {
     for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, strip.Color(0, 0, 0, gamma[j] ) );
+      strip.setPixelColor(i, strip.Color(0, 0, 0, gammma[j] ) );
     }
     delay(wait);
     strip.show();
@@ -161,7 +162,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
     for (int j = 0; j < 256 ; j++) {
 
       for (uint16_t i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(0, 0, 0, gamma[j] ) );
+        strip.setPixelColor(i, strip.Color(0, 0, 0, gammma[j] ) );
       }
       strip.show();
     }
@@ -170,7 +171,7 @@ void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
     for (int j = 255; j >= 0 ; j--) {
 
       for (uint16_t i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(0, 0, 0, gamma[j] ) );
+        strip.setPixelColor(i, strip.Color(0, 0, 0, gammma[j] ) );
       }
       strip.show();
     }
