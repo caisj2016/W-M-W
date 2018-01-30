@@ -103,14 +103,8 @@ void loop() {
   //モード2 障害物センサー
   if (digitalRead(buttonpin) == HIGH) {
     Serial.println("33333333333");
-    strip.setBrightness(30);
-    rainbowFade2White(3, 3, 1);
-    delay(5000);
-  }
-
-  //モード3 人感センサー
-  if (isPeopleDetected()) {
-    Serial.println("222222222222");
+    //音楽用意必要
+    player.playSong(5);
     strip.setBrightness(200);
     colorWipe(strip.Color(255, 0, 0), 50); // Red
     colorWipe(strip.Color(0, 255, 0), 50); // Green
@@ -118,12 +112,25 @@ void loop() {
     colorWipe(strip.Color(0, 0, 0, 255), 50); // White
     whiteOverRainbow(20, 75, 5);
     pulseWhite(5);
+    //回す　動作動作必要
+    mota(1);
+    delay(5000);
+  }
+
+  //モード3 人感センサー
+  if (isPeopleDetected()) {
+    Serial.println("222222222222");
+
+    //逃げる動き　動作必要
+    mota(2);
   } 
   //モード4
   //3 Music
   //4 pasuse
   //5 Next
   //6 Previous
+  //13 What’s the time
+  //20 Mode 1
   //19 Start
   //18 Stop
   //17 Right
@@ -133,10 +140,14 @@ void loop() {
     cmd = softSerial.read();
     switch (cmd)
     {
+      //音楽用意必要
       case 3: player.playSong(1);break;
       case 4: player.pausePlay(); break;
       case 5: player.next(); break;
       case 6: player.prev(); break;
+      //想像外、変な動き　動作必要
+      case 13: mota(3); break;
+      case 20: mota(4); break;
       case 19: foward(); break;
       case 18: despin(); break;
       case 17: foward_right(); break;
@@ -153,7 +164,6 @@ boolean isPeopleDetected()
 {
   int sensorValue = digitalRead(PIR_MOTION_SENSOR);
   if (sensorValue == HIGH) {
-    player.next();
     return true;
   } else {
     return false;
@@ -224,6 +234,55 @@ void despin() {
   digitalWrite(B_IN1, HIGH);
   digitalWrite(B_IN2, HIGH);
 };
+
+//mota動作　動作確認必要
+//モーターの動作　勝手に設定された、動作変更をお願いします
+void mota(int m){
+    switch(m){
+        case '1':
+            {
+                Serial.println("11111111111");
+                foward();
+                delay(500);
+                reverse();
+                delay(500);
+                despin();
+            }
+            break;
+        case '2':
+            {
+                Serial.println("222222222222");
+                foward_left();
+                delay(500);
+                reverse();
+                delay(500);
+                despin();
+            }
+            break;
+        case '3':
+            {
+                Serial.println("33333333333");
+                foward_left();
+                delay(500);
+                foward();
+                delay(500);
+                despin();
+            }
+            break;
+        case '4':
+            {
+                Serial.println("4444444444");
+                reverse_left();
+                delay(500);
+                foward_right();
+                delay(500);
+                despin();
+            }
+            break;
+        default:
+            Serial.println("Can not find a valid action");     
+        }
+}
 
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint8_t wait) {

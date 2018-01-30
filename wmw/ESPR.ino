@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <Milkcocoa.h>
+#include "MP3.h"
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
 #include <avr/power.h>
@@ -27,6 +28,9 @@ const char MQTT_SERVER[] PROGMEM    = MILKCOCOA_APP_ID ".mlkcca.com";
 const char MQTT_CLIENTID[] PROGMEM  = __TIME__ MILKCOCOA_APP_ID;
 
 Milkcocoa milkcocoa = Milkcocoa(&client, MQTT_SERVER, MILKCOCOA_SERVERPORT, MILKCOCOA_APP_ID, MQTT_CLIENTID);
+//音楽　
+SoftwareSerial mp3Serial(14, 15); // RX, TX
+MP3 player(mp3Serial);
 //LED
 //const int ledPin =  12;
 int ledState = LOW;
@@ -77,6 +81,7 @@ void loop() {
 };
 
 void onpush(DataElement *elem) {
+  player.next();
   colorWipe(strip.Color(0, 0, 255), 5000); // Blue
   delay(200);
 };
