@@ -83,7 +83,7 @@ void loop() {
 void onpush(DataElement *elem) {
   player.next();
   strip.setBrightness(30);
-  rainbowFade2White(3, 3, 1);
+  rainbowFade2White(3, 60, 1);
   delay(200);
 };
 
@@ -254,3 +254,4 @@ uint8_t green(uint32_t c) {
 uint8_t blue(uint32_t c) {
   return (c);
 }
+
